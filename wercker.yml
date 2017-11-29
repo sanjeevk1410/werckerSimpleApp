@@ -1,7 +1,7 @@
 box: 
   id: node:latest
   ports: 
-    - "8080"
+    - "5055"
     
 # Build application
 build:
@@ -26,8 +26,8 @@ push:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
           registry: https://registry.hub.docker.com/v2
-          repository: bluesnake/werckersimpleapp
-          ports: "8080"
+          repository: sanjeevk1410/werckersimpleapp
+          ports: "5055"
           working-dir: /pipeline/source
           cmd: node app.js
 
@@ -40,7 +40,7 @@ deploy:
           hostname: $DIGITALOCEAN_IP
       - script:
           name: pull latest image
-          code: ssh root@$DIGITALOCEAN_IP docker pull bluesnake/werckersimpleapp:latest
+          code: ssh root@$DIGITALOCEAN_IP docker pull sanjeevk1410/werckersimpleapp:latest
       - script:
           name: stop running container
           code: ssh root@$DIGITALOCEAN_IP docker stop werckersimpleapp || echo ‘failed to stop running container’
@@ -49,10 +49,10 @@ deploy:
           code: ssh root@$DIGITALOCEAN_IP docker rm werckersimpleapp || echo ‘failed to remove stopped container’
       - script:
           name: remove image behind stopped container
-          code: ssh root@$DIGITALOCEAN_IP docker rmi bluesnake/werckersimpleapp:current || echo ‘failed to remove image behind stopped container’
+          code: ssh root@$DIGITALOCEAN_IP docker rmi sanjeevk1410/werckersimpleapp:current || echo ‘failed to remove image behind stopped container’
       - script:
           name: tag newly pulled image
-          code: ssh root@$DIGITALOCEAN_IP docker tag bluesnake/werckersimpleapp:latest bluesnake/werckersimpleapp:current
+          code: ssh root@$DIGITALOCEAN_IP docker tag sanjeevk1410/werckersimpleapp:latest bluesnake/werckersimpleapp:current
       - script:
           name: run new container
-          code: ssh root@$DIGITALOCEAN_IP docker run -d -p 8080:8080 --name werckersimpleapp bluesnake/werckersimpleapp:current
+          code: ssh root@$DIGITALOCEAN_IP docker run -d -p 8080:8080 --name werckersimpleapp sanjeevk1410/werckersimpleapp:current
