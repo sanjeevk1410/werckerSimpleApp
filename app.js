@@ -8,7 +8,7 @@ app.get('/', function(req, res){
     res.end();
 });
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 5055;
 app.listen(port);
 
 module.exports = app;
